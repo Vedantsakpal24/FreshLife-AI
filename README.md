@@ -1,70 +1,53 @@
-# FreshLife AI (Local Desktop & Mobile App)
+# FreshLife AI (Flutter Version)
 
-FreshLife AI is a **100% offline, privacy-first, on-device** application that analyzes fruits and vegetables to determine their freshness condition and estimate their remaining shelf life.
+FreshLife AI is a **100% offline, privacy-first, on-device** application that analyzes fruits and vegetables to determine their freshness condition and estimate their remaining shelf life. 
 
-This repository contains the source code to build a **Windows `.exe` installer** and an **Android `.apk` installer**.
+It has been entirely re-architected in **Flutter** to provide proper native `.exe` and `.apk` applications for Windows and Android, requiring absolutely zero web wrappers (like Electron or Capacitor), zero Node.js dependencies, and zero Python servers.
 
 ## Architecture
-- **Framework:** Next.js (Static Export), wrapped in Electron (Windows) and Capacitor (Android).
-- **No Cloud Backend**: The application does not require any backend servers, serverless functions, or cloud ML hosting.
-- **On-Device ML**: Inference is performed directly on your hardware using `onnxruntime-web` with WebAssembly (WASM).
-- **Packaged Models**: The `.onnx` models (`best.onnx` and `mobilenet.onnx`) are compiled directly into the application.
+- **Framework:** Flutter (Dart)
+- **No Web Technologies**: No Next.js, No Node.js, No Vercel, No Electron. 
+- **No Cloud Backend**: The application does not require any backend servers or cloud ML hosting.
+- **On-Device ML**: Inference is performed natively on your hardware using the Dart `onnxruntime` bindings.
+- **Packaged Models**: The `.onnx` models (`best.onnx` and `mobilenet.onnx`) are bundled securely inside the app's native assets.
+
+## AI Models
+The original trained `best.pt` YOLO classification model (and a general vision fallback) were exported to `.onnx` format and placed inside `app/assets/models/`. 
+
+1. **Primary Model (`best.onnx`)**: Custom-trained classification model that precisely identifies 24 supported fruit and vegetable freshness classes.
+2. **Fallback Model (`mobilenet.onnx`)**: A general-purpose vision model for classifying unknown produce.
+3. **Shelf-Life Engine**: A lightweight logic engine running locally in Dart that calculates estimated shelf life via model output + temp/humidity variables.
 
 ---
 
-## 🖥️ Building for Windows (FreshLife-AI-Setup.exe)
+## 🛠️ Building the Apps
 
-You can build the Windows installer directly from this repository using Node.js and Electron Builder.
+Because the frontend is entirely written in Flutter, you will need the Flutter SDK installed on your machine.
 
-### Requirements
-- [Node.js](https://nodejs.org/) installed
-
-### Build Instructions
-1. Open a terminal and navigate to the `frontend` folder:
-   ```bash
-   cd frontend
-   ```
-2. Install dependencies (if you haven't already):
-   ```bash
-   npm install
-   ```
-3. Build the Next.js static files and compile the `.exe` installer:
-   ```bash
-   npm run build
-   npm run electron:build
-   ```
-4. Once completed, your installer will be located at:
-   **`frontend/dist/FreshLife AI Setup 1.0.0.exe`**
-
-You can send this `.exe` file to anyone, and they can install and run the app completely offline!
-
----
-
-## 📱 Building for Android (FreshLife-AI.apk)
-
-The Android app is powered by Capacitor, which wraps the exact same web code and AI models into a native Android application.
-
-### Requirements
-- [Node.js](https://nodejs.org/) installed
-- [Android Studio](https://developer.android.com/studio) installed
+### Prerequisites
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) installed.
 
 ### Build Instructions
-1. Open a terminal and navigate to the `frontend` folder:
+
+1. Open your terminal and navigate to the `app` folder:
    ```bash
-   cd frontend
-   npm install
-   npm run build
+   cd app
    ```
-2. Sync your web code to the Android project:
+2. Fetch the Flutter packages (like `onnxruntime` and `image_picker`):
    ```bash
-   npx cap sync
+   flutter pub get
    ```
-3. Open the Android project in Android Studio:
-   ```bash
-   npx cap open android
-   ```
-4. Inside Android Studio:
-   - Go to **Build** > **Build Bundle(s) / APK(s)** > **Build APK(s)**.
-   - Once it finishes, a small popup will appear in the bottom right. Click **locate** to find your compiled `.apk`.
-   
-You can transfer this `.apk` file to any Android device to install and run the AI completely offline!
+
+**To build the Windows Desktop App (.exe):**
+```bash
+flutter build windows
+```
+*(Your native Windows `.exe` will be generated in `app/build/windows/runner/Release/`)*
+
+**To build the Android App (.apk):**
+```bash
+flutter build apk
+```
+*(Your native Android `.apk` will be generated in `app/build/app/outputs/flutter-apk/app-release.apk`)*
+
+You can now easily distribute these native, extremely lightweight, fully offline applications to consumers!

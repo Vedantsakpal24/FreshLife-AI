@@ -1,0 +1,39 @@
+name: freshlife_ai
+description: A 100% offline, privacy-first, on-device application for fruit/vegetable freshness and shelf-life prediction.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # UI
+  cupertino_icons: ^1.0.2
+  
+  # Image picking from camera and gallery
+  image_picker: ^1.1.2
+  
+  # Image processing (resizing, converting to tensor)
+  image: ^4.2.0
+  
+  # ONNX Runtime for local inference
+  onnxruntime: ^2.6.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+
+  # Add ONNX models to assets
+  assets:
+    - assets/models/best.onnx
+    - assets/models/mobilenet.onnx
+    - assets/models/imagenet_classes.json
