@@ -1,0 +1,20 @@
+# Datasets & ML data (over 30,000 image files)
+data/
+ml/
+models/
+scripts/
+reports/
+*.pt
+*.pth
+*.joblib
+
+# Python & Environment
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Node
+node_modules/
+.next/
