@@ -2,13 +2,20 @@
   "name": "freshlife-ai-frontend",
   "version": "1.0.0",
   "private": true,
+  "main": "main.js",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "electron:start": "electron .",
+    "electron:build": "electron-builder build --win"
   },
   "dependencies": {
+    "@capacitor/android": "^8.5.0",
+    "@capacitor/cli": "^8.5.0",
+    "@capacitor/core": "^8.5.0",
+    "electron-serve": "^3.0.1",
     "next": "^16.3.1",
     "onnxruntime-web": "^1.27.0",
     "react": "^19.2.8",
@@ -21,10 +28,27 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "autoprefixer": "^10.5.4",
+    "electron": "^43.4.1",
+    "electron-builder": "^26.15.3",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.3.1",
     "postcss": "^8.5.26",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3"
+  },
+  "build": {
+    "appId": "com.vedantsakpal.freshlife",
+    "productName": "FreshLife AI",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "files": [
+      "out/**/*",
+      "main.js",
+      "package.json"
+    ]
   }
 }
