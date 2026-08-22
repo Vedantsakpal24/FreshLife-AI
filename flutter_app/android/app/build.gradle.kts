@@ -5,8 +5,8 @@ plugins {
 
 android {
     namespace = "com.freshlife.ai"
-    compileSdk = 34
-    ndkVersion = "25.2.9519653"
+    compileSdk = 35
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -16,13 +16,9 @@ android {
     defaultConfig {
         applicationId = "com.freshlife.ai"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-
-        ndk {
-            abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86_64"))
-        }
     }
 
     buildTypes {
@@ -31,11 +27,6 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
         }
-    }
-
-    lint {
-        checkReleaseBuilds = false
-        abortOnError = false
     }
 }
 
