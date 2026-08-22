@@ -14,7 +14,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.flutter_app"
+        applicationId = "com.freshlife.ai"
         minSdk = 24
         targetSdk = 34
         // Uses the version code from pubspec.yaml. When using split APKs, 1000 * ABI_VERSION
