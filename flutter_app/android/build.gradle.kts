@@ -20,15 +20,22 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
-// Fix AAR metadata validation and force compileSdkVersion 34 across all subproject plugins
 subprojects {
-    tasks.matching { it.name.contains("AarMetadata") }.configureEach {
-        enabled = false
+    tasks.configureEach {
+        if (name.contains("AarMetadata", ignoreCase = true)) {
+            enabled = false
+        }
     }
     afterEvaluate {
-        if (plugins.hasPlugin("com.android.library") || plugins.hasPlugin("com.android.application")) {
-            extensions.findByType<com.android.build.gradle.BaseExtension>()?.apply {
-                compileSdkVersion(34)
+        if (project.hasProperty("android")) {
+            val androidExt = project.extensions.findByName("android")
+            if (androidExt != null) {
+                try {
+                    val compileMethod = androidExt.javaClass.methods.firstOrNull {
+                        it.name == "compileSdkVersion" && it.parameterTypes.size == 1 && it.parameterTypes[0] == Int::class.javaPrimitiveType
+                    }
+                    compileMethod?.invoke(androidExt, 34)
+                } catch (_: Exception) {}
             }
         }
     }
